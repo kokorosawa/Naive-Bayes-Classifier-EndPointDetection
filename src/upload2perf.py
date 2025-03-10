@@ -59,9 +59,9 @@ if __name__ == "__main__":
         clip_audio = gr.Audio(type="filepath")
         
         with gr.Row():
-            submit_button = gr.Button("執行")
-            clear_button = gr.Button("清除")
-            play_dect = gr.Button("播放")
+            submit_button = gr.Button("endpoint detection")
+            clear_button = gr.Button("clear")
+            play_dect = gr.Button("play detection")
         
         submit_button.click(fn=epd_inference, inputs=audio_input, outputs=output_plot)
         clear_button.click(fn=clear_output, inputs=[], outputs=[audio_input, output_plot])

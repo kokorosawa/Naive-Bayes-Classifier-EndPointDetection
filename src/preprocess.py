@@ -21,9 +21,6 @@ def preprocess(audio_path):
     start = sample2frame(start, frameSize, overlap)
     end = sample2frame(end, frameSize, overlap)
     label[start:end] = 1
-    # print(label.shape)
-    # label = frame2sample(data.shape[0], frameSize, overlap)
-    # print(label.shape)
     return data, label
 
 def sample2frame(samples, frame_len = frameSize, frame_shift = overlap):
