@@ -1,0 +1,5 @@
+*.pyc
+venv
+waveFile_2008
+wavefiles-all
+.DS_Store
