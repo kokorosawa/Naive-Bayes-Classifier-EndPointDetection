@@ -1,5 +1,9 @@
 # Naive Bayes Classifier EndPointDetection
 
+## 📑 Method
+
+For detailed information about the method used in this project, please refer to [myMethod.md](./myMethod.md).
+
 ## 📚 Introduction
 
 This project implements a Naive Bayes Classifier for endpoint detection in speech signals. The classifier is trained to distinguish between speech and non-speech segments.

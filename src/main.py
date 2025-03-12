@@ -1,17 +1,19 @@
+import os
 from sklearn.naive_bayes import GaussianNB
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 from loguru import logger
 import pickle
-from preprocess import read_wavefile
+from eval import dev_model, eval_wavefile
+from preprocess import read_wavefile,read_person_dir
 
 logger.add('logs/main.log')
 
 logger.info('loading data...')
-x, y = read_wavefile('wavefiles-all')
+train, test = read_wavefile('waveFile_2008', split_ratio=0.2)
 
-logger.info('splitting data...')
-train_x, test_x, train_y, test_y = train_test_split(x, y, test_size=0.2, random_state=42)
+train_x, train_y = read_person_dir(train)
+test_x, test_y = read_person_dir(test)
 
 model = GaussianNB()
 logger.info('training model...')
@@ -21,5 +23,9 @@ pickle.dump(model, open('model/model.pkl', 'wb'))
 pred_y = model.predict(test_x)
 logger.info('evaluating model...')
 accuracy = accuracy_score(test_y, pred_y)
+eval_wavefile(test)
 
 print('Accuracy: ', accuracy*100, '%')
+dir = 'waveFile_2008'
+eval_list = [os.path.join(dir,i) for i in os.listdir(dir)]
+eval_wavefile(eval_list)

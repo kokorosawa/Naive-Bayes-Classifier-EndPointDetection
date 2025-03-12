@@ -38,7 +38,12 @@ def epd_inference(audio_input):
     fig.add_vline(x=pred_end, line_width=2, line_color="red", name='Predicted End')
     fig.add_vline(x=label_end, line_width=2, line_color="blue", name='Label End')
     fig.update_layout(title='Audio Endpoint Detection', xaxis_title='Frame', yaxis_title='Label')
-    return fig
+
+    label_fig = go.Figure()
+    label_fig.add_trace(go.Scatter(x=x_vals, y=pred_y, mode='lines', name='pred_y',line=dict(color='red')))
+    label_fig.add_trace(go.Scatter(x=x_vals, y=label, mode='lines', name='label',line=dict(color='blue')))
+    label_fig.update_layout(title='Label Comparison', xaxis_title='Frame', yaxis_title='Label')
+    return fig, label_fig
 
 def clear_output():
     return None, go.Figure()
@@ -54,7 +59,8 @@ def play_dect_audio(audio_input):
 if __name__ == "__main__":
    with gr.Blocks() as demo:
         gr.Markdown("# Naive Bayes Classifier Audio Endpoint Detection")
-        output_plot = gr.Plot()
+        output_plot_wav = gr.Plot()
+        output_plot_label = gr.Plot()
         audio_input = gr.Audio(type="filepath")
         clip_audio = gr.Audio(type="filepath")
         
@@ -63,8 +69,8 @@ if __name__ == "__main__":
             clear_button = gr.Button("clear")
             play_dect = gr.Button("play detection")
         
-        submit_button.click(fn=epd_inference, inputs=audio_input, outputs=output_plot)
-        clear_button.click(fn=clear_output, inputs=[], outputs=[audio_input, output_plot])
+        submit_button.click(fn=epd_inference, inputs=audio_input, outputs=[output_plot_wav, output_plot_label])
+        clear_button.click(fn=clear_output, inputs=[], outputs=[audio_input, output_plot_wav])
         play_dect.click(fn=play_dect_audio, inputs=[audio_input], outputs=[clip_audio])
     
         demo.launch(server_name="127.0.0.1", server_port=7860, debug=True)
